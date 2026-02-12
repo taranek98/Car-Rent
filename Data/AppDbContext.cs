@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using CarRent.Models;
 using Microsoft.AspNetCore.Identity;
 namespace CarRent.DataBase;
-// TODO: zrobić automatyzację z githubem
 public class AppDbContext : IdentityDbContext<User>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options): base(options){}
     // public DbSet<User> Users {get; set;}
     public DbSet<Car> Cars {get; set;} 
+    public DbSet<Cart> Carts {get; set;}
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

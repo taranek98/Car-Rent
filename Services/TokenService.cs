@@ -20,7 +20,8 @@ public class TokenService : ITokenService
     {
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.NameId, user.Id)
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id),
+            new Claim("CartId", user.Cart.Id)
         };
 
         foreach (var role in roles)

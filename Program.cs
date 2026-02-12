@@ -47,6 +47,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ICartInterface, CartService>();
 
 var app = builder.Build();
 

@@ -59,7 +59,7 @@ public class CarService : ICarService
         var cars = await _context.Cars.ToListAsync();
         foreach(var car in cars)
         {
-            if(car.User == null)
+            if(car.User == null) 
             {
                 carsAvailable.Add(car);
             }
