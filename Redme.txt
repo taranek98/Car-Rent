@@ -1,0 +1,20 @@
+1. Tworzenie podstawy projektu:
+- dotnet new webapi -n (nazwaProjektu)
+2. Instalacja Entity FrameworkCore:
+- dotnet add package Microsoft.EntityFrameworkCore.Design
+3. Instalacja Pakietu Identity
+- dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+4. Instalacja wybranej Bazy danych(w moim przypadku SqlLite):
+- dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+5. Instalacja JWTBearer biblioteki do tworzenia Tokena autoryzacji:
+- dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+6. Dodaj w pliku konfiguracyjnym ConnectionString do połączenia z twoją bazą danych
+(W moim przypadku ścieżkę do bazy danych: "Data Source=CarRent.db").
+7. Dodaj w pliku konfiguracyjnym JWT z polami "Key", "Issuer", "Audience"
+8. Migracja:
+a) tworzenie instancji:
+- dotnet ef migrations add (nazwa migracji)
+b) Aktualizacja bazy danych:
+- dotnet ef database update
+c) Lista migracji:
+- dotnet ef migrations list
