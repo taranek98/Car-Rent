@@ -1,0 +1,15 @@
+# 1. Ignoruj wszystko na najwyższym poziomie
+/*
+
+# 2. Odblokuj plik .gitignore
+!.gitignore
+
+# 3. Odblokuj konkretne foldery i wejdź do nich
+!Controllers/
+!Data/
+!Interfaces/
+!Models/
+!Services/
+
+# 4. Odblokuj plik Program.cs
+!Program.cs
