@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace CarRent.Services;
+// TODO: Naprawić ostatniego BUGA
 // TODO: Endpoint wybierania auta do wyporzyczenia
 // TODO: endpoint zatwierdzenie płatności
 // TODO: endpoint przypisanie auta do użytkownika
@@ -62,19 +63,28 @@ public class UserService : IUserService
                 LastName = lastName,
                 Email = email,
                 UserName = email,
-                Cart = new Cart()
+                Cart = new Cart(),
+                Cars = new List<Car>()
             };
+            newUser.Cart.User = newUser;
             var result = await _userManager.CreateAsync(newUser, password);
-            // foreach (var error in result.Errors)
-            // {
-            //     // error.Code to nazwa błędu, error.Description to wyjaśnienie
-            //     Console.WriteLine($"Kod: {error.Code}, Opis: {error.Description}");
-            // }
+            foreach (var error in result.Errors)
+            {
+                // error.Code to nazwa błędu, error.Description to wyjaśnienie
+                Console.WriteLine($"Kod: {error.Code}, Opis: {error.Description}");
+            }
+            result = await _userManager.AddToRoleAsync(newUser, "User");
+                        foreach (var error in result.Errors)
+            {
+                // error.Code to nazwa błędu, error.Description to wyjaśnienie
+                Console.WriteLine($"Kod2: {error.Code}, Opis: {error.Description}");
+            }
             return result.Succeeded;   
         }
         catch(Exception ex)
         {
-            Console.WriteLine($"Błąd: {ex.Message}");
+            Console.WriteLine("PEŁNY BŁĄD:");
+            Console.WriteLine(ex.ToString());
             return false;
         }
     }
@@ -123,8 +133,10 @@ public class UserService : IUserService
             }
             return null;
         }
-        catch
+        catch(Exception ex)
         {
+            Console.WriteLine("PEŁNY BŁĄD:");
+            Console.WriteLine(ex.ToString());
             return null;
         }
     }

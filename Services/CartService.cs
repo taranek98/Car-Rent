@@ -1,5 +1,6 @@
 using CarRent.DataBase;
 using CarRent.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRent.Services;
 
@@ -14,13 +15,14 @@ public class CartService : ICartInterface
     {
         try
         {
-            var car = await _context.Cars.Include(c => c.cart).FindAsync(vin);
-            var cart = await _context.Carts.FindAsync(cartId);
+            var car = await _context.Cars.FindAsync(vin);
+            var cart = await _context.Carts.Include(c => c.Cars).FirstOrDefaultAsync(c => c.Id == cartId);
             if(car == null || cart == null || car.User != null)
             {
                 return false;
             }
             cart.Cars.Add(car);
+            await _context.SaveChangesAsync();
             return true;
         }
         catch

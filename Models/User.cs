@@ -10,10 +10,9 @@ public class User : IdentityUser
     [Required]
     public long Pesel {get; set;}
     [Required]
-    public string Name {get; set;}
+    public required string Name {get; set;}
     [Required]
-    public string LastName {get; set;}
-    public IList<Car>? Cars {get; set;}
-    [Required]
-    public Cart Cart{get; set;}
+    public required string LastName {get; set;}
+    public  IList<Car>? Cars {get; set;}
+    public Cart? Cart{get; set;}
 }
