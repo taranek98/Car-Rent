@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace CarRent.Services;
-// TODO: Naprawić ostatniego BUGA
 // TODO: Endpoint wybierania auta do wyporzyczenia
 // TODO: endpoint zatwierdzenie płatności
 // TODO: endpoint przypisanie auta do użytkownika
@@ -71,6 +70,7 @@ public class UserService : IUserService
             foreach (var error in result.Errors)
             {
                 // error.Code to nazwa błędu, error.Description to wyjaśnienie
+                // TODO: wytnij to
                 Console.WriteLine($"Kod: {error.Code}, Opis: {error.Description}");
             }
             result = await _userManager.AddToRoleAsync(newUser, "User");
@@ -128,7 +128,8 @@ public class UserService : IUserService
                 if(ifCorrectPassword.Succeeded)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
-                    return _tokenService.CreateToken(user, roles);
+                    var cart = await _context.Carts.FirstOrDefaultAsync(c => c.IdUser == user.Id);
+                    return _tokenService.CreateToken(user, roles, cart.Id);
                 }
             }
             return null;

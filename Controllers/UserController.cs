@@ -83,7 +83,8 @@ public class UserController : Controller
 
     [HttpPost]
     [Route("User/Admin/Assign")]
-    [Authorize(Roles = "Admin")]
+    // TODO: Po testach zmienić User na Admin
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> AdminAssign(string id)
     {
         if(! await _userService.AddAdminToRoleAsync(id))

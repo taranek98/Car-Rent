@@ -16,12 +16,12 @@ public class TokenService : ITokenService
         _config = config;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
     }
-    public string CreateToken(User user, IList<string> roles)
+    public string CreateToken(User user, IList<string> roles, string idCart)
     {
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.NameId, user.Id),
-            new Claim("CartId", user.Cart.Id)
+            new Claim("CartId", idCart) 
         };
 
         foreach (var role in roles)
