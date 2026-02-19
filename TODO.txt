@@ -1,0 +1,23 @@
+// TODO.now: Dodać view modele dla wszystkich tabel 
+// TODO.now: endpoint dodawania auta do koszyka
+// TODO.now: Endpoint pobieranie koszyka
+// TODO: test dodawania auta do koszyka
+// TODO: test pobieranie koszyka
+// TODO: endpoint zatwierdzenie płatności
+// TODO: Stworzyć automatyczne testy
+// TODO: endpoint przypisanie auta do użytkownika
+// TODO: Endpoint zwrot auta
+// TODO: Endpoint Wyświetlenie wszystkich dostępnych aut
+// TODO: Endpoint wyświetlanie danych użytkownika oraz jego wyporzyczonych aut
+// TODO: Stworzyć klasę view i ją wysyłać
+// TODO: Przerobić metody aby nie zwarały w catchu null tylko informacje wzrotną
+// TODO: test dodawania i usuwania samochodu
+// TODO: Endpoint dla admina pobrania wszystkich aut
+// TODO: Test sprawdzenia czy wszystkie autoryzacje są poprawne
+// TODO: test Sprawdzenie danych przy dodawaniu
+// TODO: Test czy wyświetla poprawnie liste dostępnych aut
+// TODO: odpwoiedznie uporządkowanie readme
+// TODO: sprawdzanie czy pesel ma wystaczajaca liczbe cyfr
+// TODO: poprawic testy
+// TODO: zrobic testy czy da sie włamać
+// TODO: usunąć wszystkie null warnings

@@ -5,15 +5,6 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace CarRent.Services;
-// TODO: Endpoint wybierania auta do wyporzyczenia
-// TODO: endpoint zatwierdzenie płatności
-// TODO: endpoint przypisanie auta do użytkownika
-// TODO: Endpoint zwrot auta
-// TODO: Endpoint Wyświetlenie wszystkich dostępnych aut
-// TODO: Endpoint wyświetlanie danych użytkownika oraz jego wyporzyczonych aut
-// TODO: Stworzyć klasę view i ją wysyłać
-// TODO: Stworzyć automatyczne testy
-// TODO: Przerobić metody aby nie zwarały w catchu null tylko informacje wzrotną
 public class UserService : IUserService
 {
     private readonly AppDbContext _context;

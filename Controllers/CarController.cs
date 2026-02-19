@@ -4,6 +4,7 @@ using CarRent.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace CarRent.Controllers;
 
+
 public class CarController : Controller
 {
     private readonly ICarService _carService;

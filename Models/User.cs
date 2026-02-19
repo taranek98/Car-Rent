@@ -1,9 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-// TODO: sprawdzanie czy pesel ma wystaczajaca liczbe cyfr
-// TODO: poprawic testy
-// TODO: zrobic testy czy da sie włamać
 namespace CarRent.Models;
 public class User : IdentityUser
 {   
