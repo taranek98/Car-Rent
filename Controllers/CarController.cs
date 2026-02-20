@@ -17,7 +17,7 @@ public class CarController : Controller
     [Route("Car/Create")]
     [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Create(string VIN, string Mark, string Model, 
-        String Color, FuelType fuel, float Prize)
+        string Color, string fuel, float Prize)
     {
         if(! await _carService.AddAsync(VIN, Mark, Model, Color, fuel, Prize))
         {

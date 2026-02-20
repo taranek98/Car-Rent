@@ -12,7 +12,7 @@ public class CarService : ICarService
     }
 
     public async Task<bool> AddAsync(string vin, string mark, string model, 
-        string color, FuelType fuel, float prize)
+        string color, string fuel, float prize)
     {
         try
         {
