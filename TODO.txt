@@ -1,4 +1,3 @@
-// TODO.now: Dodać view modele dla wszystkich tabel 
 // TODO.now: endpoint dodawania auta do koszyka
 // TODO.now: Endpoint pobieranie koszyka
 // TODO: test dodawania auta do koszyka

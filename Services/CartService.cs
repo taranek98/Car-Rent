@@ -1,6 +1,7 @@
 using CarRent.DataBase;
 using CarRent.Interfaces;
 using CarRent.Models;
+using CarRent.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRent.Services;
@@ -32,7 +33,7 @@ public class CartService : ICartInterface
         }
     }
 
-    public async Task<IList<Car>> GetCars(string cartId)
+    public async Task<IList<CarView>> GetCars(string cartId)
     {
         try
         {
@@ -41,7 +42,8 @@ public class CartService : ICartInterface
             {
                 return null;
             }
-            return cart.Cars;
+
+            return new CartView(cart);
         }
         catch(Exception e)
         {
