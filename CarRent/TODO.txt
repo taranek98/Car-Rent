@@ -1,0 +1,30 @@
+TODO.now: Dokonczyć body w requescie.
+TODO.now: Przerobić servis login na body
+TODO.now: Dokończyc tworzenie DTOS
+TODO.now: Stworzyć automatyczne testy
+TODO: Test endpoint zatwierdzenie płatności
+TODO: test dodawania auta do koszyka
+TODO: test pobieranie koszyka
+TODO: endpoint przypisanie auta do użytkownika
+TODO: Endpoint zwrot auta
+TODO: Endpoint Wyświetlenie wszystkich dostępnych aut
+TODO: Endpoint wyświetlanie danych użytkownika oraz jego wyporzyczonych aut
+TODO: Stworzyć klasę view i ją wysyłać
+TODO: Przerobić metody aby nie zwarały w catchu null tylko informacje wzrotną
+TODO: test dodawania i usuwania samochodu
+TODO: Endpoint dla admina pobrania wszystkich aut
+TODO: Test sprawdzenia czy wszystkie autoryzacje są poprawne
+TODO: test Sprawdzenie danych przy dodawaniu
+TODO: Test czy wyświetla poprawnie liste dostępnych aut
+TODO: odpwoiedznie uporządkowanie readme
+TODO: sprawdzanie czy pesel ma wystaczajaca liczbe cyfr
+TODO: poprawic testy
+TODO: zrobic testy czy da sie włamać
+TODO: usunąć wszystkie null warnings
+TODO: Stworzyć dokumentacje API
+TODO: złączyć usuwanie usera z jego koszykiem
+TODO: Zabezpieczenie przed atakami SQL
+TODO: Potworzyć metody bazowe jak naprzykład wywalanie błędu 
+TODO: Poprawić literówke Prize na price
+TODO: Dodanie endpoint pobierz wszystkie auta jako admin
+TODO: Zmodyfikować projekt aby był łatwo przenoszalny

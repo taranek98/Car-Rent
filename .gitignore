@@ -1,0 +1,8 @@
+# 1. Ignoruj wszystko na najwyższym poziomie
+bin/
+Migrations/
+obj/
+Properties/
+*.json
+*.db
+*.http
