@@ -1,4 +1,3 @@
-TODO.now: Dokonczyć body w requescie.
 TODO.now: Przerobić servis login na body
 TODO.now: Dokończyc tworzenie DTOS
 TODO.now: Stworzyć automatyczne testy

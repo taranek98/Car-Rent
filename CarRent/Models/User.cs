@@ -5,7 +5,7 @@ namespace CarRent.Models;
 public class User : IdentityUser
 {   
     [Required]
-    public long Pesel {get; set;}
+    public required string Pesel {get; set;}
     [Required]
     public required string Name {get; set;}
     [Required]

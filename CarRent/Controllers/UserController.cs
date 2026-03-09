@@ -31,9 +31,9 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Route("User/Login")]
-    public async Task<IActionResult> Login(string email, string password)
+    public async Task<IActionResult> Login([FromBody]LoginDto dto)
     {
-        var result = await _userService.LoginAsync(email, password);
+        var result = await _userService.LoginAsync(dto.Email, dto.Password);
         if(!result.IsSuccess)
         {
             return BadRequest(result.Message);

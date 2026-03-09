@@ -4,7 +4,7 @@ namespace CarRent.ViewModels;
 public class UserAdminView
 {   
     public string Id {get; set;}
-    public long Pesel {get; set;}
+    public string Pesel {get; set;}
     public string Name {get; set;}
     public string LastName {get; set;}
     public IList<string>? VINs {get; set;}

@@ -6,7 +6,7 @@ namespace CarRent.Interfaces;
 
 public interface IUserService
 {
-    Task<ServiceResult> AddAsync(int pesel, string name, string lastname, 
+    Task<ServiceResult> AddAsync(string pesel, string name, string lastname, 
         string password, string email);
     Task<ServiceResult<UserView>> InfoAsync(string id);
     Task<ServiceResult<IList<UserAdminView>>> InfoAllAsync();

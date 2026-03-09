@@ -4,7 +4,7 @@ using CarRent.Models;
 namespace CarRent.ViewModels;
 public class UserView
 {   
-    public long Pesel {get; set;}
+    public string Pesel {get; set;}
     public string Name {get; set;}
     public string LastName {get; set;}
     [JsonPropertyName("vins")]

@@ -43,7 +43,7 @@ public class UserService : BaseService, IUserService
         }
     }
 
-    public async Task<ServiceResult> AddAsync(int pesel, string name, string lastName, 
+    public async Task<ServiceResult> AddAsync(string pesel, string name, string lastName, 
         string password, string email)
     {
         try
