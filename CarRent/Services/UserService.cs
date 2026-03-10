@@ -162,6 +162,11 @@ public class UserService : BaseService, IUserService
     {
         try
         {
+            if(funds <= 0)
+            {
+                 _logger.LogError("Try add negative funds");
+                return ServiceResult.Failure("Środki musza być liczbą dodatnią");
+            }
             var user = await GetUserByIdAsync(id);
             user.AccountBalance += funds;
             var result = await _context.SaveChangesAsync();

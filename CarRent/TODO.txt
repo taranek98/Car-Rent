@@ -1,5 +1,3 @@
-TODO.now: Przerobić servis login na body
-TODO.now: Dokończyc tworzenie DTOS
 TODO.now: Stworzyć automatyczne testy
 TODO: Test endpoint zatwierdzenie płatności
 TODO: test dodawania auta do koszyka
