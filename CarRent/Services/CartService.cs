@@ -9,7 +9,6 @@ namespace CarRent.Services;
 
 public class CartService : BaseService, ICartInterface
 {
-    
     public CartService(AppDbContext context, ILogger<CartService> logger)
     :base(context, logger){}
     public async Task<ServiceResult> AddCarAsync(string vin, string cartId)
@@ -54,6 +53,11 @@ public class CartService : BaseService, ICartInterface
         {
             var user = await GetUserWithCarsByIdAsync(userId);
             var cart = await GetCartWithCarsByIdAsync(cartId);
+            if(cart.Cars.Count == 0)
+            {
+                _logger.LogError("Cart is empty");
+                return ServiceResult.Failure("Brak aut w koszyku");
+            }
             if(user.AccountBalance - cart.Totality < 0)
             {
                 _logger.LogError("User have not enough funds");
@@ -69,28 +73,33 @@ public class CartService : BaseService, ICartInterface
             if(result == DatabaseNoChanges)
             {
                 _logger.LogError("Database save Error");
-                return ServiceResult.Failure("Coś poszlo nie tak");;    
+                return ServiceResult.Failure("Coś poszlo nie tak");  
             }
-            return ServiceResult.Success("Transakcja zaakceptowana");;
+            return ServiceResult.Success("Transakcja zaakceptowana");
         }
         catch(Exception ex)
         {
             _logger.LogError(ex, "Critical Error in Buy Car");
-            return ServiceResult.Failure("Coś poszło nie tak");;
-        }
-            
+            return ServiceResult.Failure("Coś poszło nie tak");
+        }  
     }
 
     public async Task<ServiceResult<IList<CarView>>> GetCarsAsync(string cartId)
     {
-        var cart = await GetCartWithCarsByIdAsync(cartId);
-        var carViewList = new List<CarView>();
-        foreach (var car in cart.Cars)
+        try
         {
-            carViewList.Add(new CarView(car));
+            var cart = await GetCartWithCarsByIdAsync(cartId);
+            var carViewList = new List<CarView>();
+            foreach (var car in cart.Cars)
+            {
+                carViewList.Add(new CarView(car));
+            }
+            return  ServiceResult<IList<CarView>>.Success(carViewList, "Operacja powiodła się");    
         }
-        return  ServiceResult<IList<CarView>>.Success(carViewList, "Operacja powiodła się");
-
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Critical Error in Buy Car");
+            return ServiceResult<IList<CarView>>.Failure("Coś poszło nie tak");
+        }
     }
-    
 }

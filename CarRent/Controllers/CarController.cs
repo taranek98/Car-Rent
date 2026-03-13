@@ -15,7 +15,8 @@ public class CarController : Controller
 
     [HttpPost]
     [Route("Car/Create")]
-    [Authorize(Roles ="Admin")]
+    // TODO: Po testach zmienić User na Admin
+    [Authorize(Roles ="User")]
     public async Task<IActionResult> Create(string VIN, string Mark, string Model, 
         string Color, string fuel, decimal Prize)
     {
@@ -42,7 +43,8 @@ public class CarController : Controller
 
     [HttpDelete]
     [Route("Car/Delete")]
-    [Authorize(Roles = "Admin")]
+    // TODO: Po testach zmienić User na Admin
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> Delete(string VIN)
     {
         var result = await _carService.DeleteAsync(VIN);
