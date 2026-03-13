@@ -3,6 +3,8 @@ bin/
 Migrations/
 obj/
 Properties/
+.vs/
 *.json
-*.db
+*.db*
 *.http
+!Tests_postman/*.json

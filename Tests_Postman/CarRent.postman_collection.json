@@ -1,0 +1,4377 @@
+{
+  "info": {
+    "_postman_id": "dc387889-dcf8-40fe-ae72-0441c476dd8a",
+    "name": "CarRent",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49818409",
+    "_collection_link": "https://go.postman.co/collection/49818409-dc387889-dcf8-40fe-ae72-0441c476dd8a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Rejestracja i logowanie",
+      "item": [
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ],
+              "query": [
+                {
+                  "key": "pesel",
+                  "value": "{{userPesel}}",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "{{userName}}",
+                  "disabled": true
+                },
+                {
+                  "key": "lastName",
+                  "value": "{{userLastName}}",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "{{userEmail}}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Pesel\", function(){\r",
+                  "    pm.expect(responseJson.pesel.toString()).to.eql(pm.environment.get(\"userPesel\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Name\", function(){\r",
+                  "    pm.expect(responseJson.name).to.eql(pm.environment.get(\"userName\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Last Name\", function(){\r",
+                  "    pm.expect(responseJson.lastName).to.eql(pm.environment.get(\"userLastName\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct VINS\", function(){\r",
+                  "    pm.expect(responseJson.vins).to.be.an('array').and.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct accountBalance\", function(){\r",
+                  "    pm.expect(Number(responseJson.accountBalance)).to.eql(0)\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja rejestracja",
+      "item": [
+        {
+          "name": "Create User with empty values",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"\",\r\n    \"LastName\": \"\",\r\n    \"Email\": \"\",\r\n    \"Pesel\": \"\",\r\n    \"Password\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ],
+              "query": [
+                {
+                  "key": "pesel",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "lastName",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User with empty incorrect mail and Pesel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"ASDasd\",\r\n    \"LastName\": \"asdasd\",\r\n    \"Email\": \"asdasd\",\r\n    \"Pesel\": \"asdasd\",\r\n    \"Password\": \"sdaaaa\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ],
+              "query": [
+                {
+                  "key": "pesel",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "lastName",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User with empty incorrect password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Message Response\", function(){\r",
+                  "    pm.expect(pm.response.text()).to.eql(\"Dodawanie użytkowanika nie powiodło się\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"ASDasd\",\r\n    \"LastName\": \"asdasd\",\r\n    \"Email\": \"asdasd@asd\",\r\n    \"Pesel\": \"11111111111\",\r\n    \"Password\": \"sdaaaa\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ],
+              "query": [
+                {
+                  "key": "pesel",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "lastName",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create 2 the same Users step 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"Aleks\",\r\n    \"LastName\": \"Wolow\",\r\n    \"Email\": \"dowsal@wp.com\",\r\n    \"Pesel\": \"11111111111\",\r\n    \"Password\": \"1A!sdaaaa43\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ],
+              "query": [
+                {
+                  "key": "pesel",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "lastName",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create 2 the same Users step 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Message Response\", function(){\r",
+                  "    pm.expect(pm.response.text()).to.eql(\"Dodawanie użytkowanika nie powiodło się\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"Aleks\",\r\n    \"LastName\": \"Wolow\",\r\n    \"Email\": \"dowsal@wp.com\",\r\n    \"Pesel\": \"11111111111\",\r\n    \"Password\": \"1A!sdaaaa43\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ],
+              "query": [
+                {
+                  "key": "pesel",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "lastName",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create 2 the same Users Clean",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"dowsal@wp.com\",\r\n    \"Password\": \"1A!sdaaaa43\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create 2 the same Users Clean",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja Logowania",
+      "item": [
+        {
+          "name": "Login with empty values",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"\",\r\n    \"Password\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "Ania102@hmail.xd",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "AniaLubiKotki1!",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login with incorrect vales",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Message Response\", function(){\r",
+                  "    pm.expect(pm.response.text()).to.eql(\"Nie poprawne dane logowania\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"aaaaaaaaaaa\",\r\n    \"Password\": \"aaaaaaaaaa\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "Ania102@hmail.xd",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "AniaLubiKotki1!",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja pobierania danych użytkownika",
+      "item": [
+        {
+          "name": "Get User without Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User with invalid Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "aaaaaaaaaaaaaaaaa",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja usuwania użytkonwika",
+      "item": [
+        {
+          "name": "Delete User with invalid token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "11111111111111111111",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dodawanie środków",
+      "item": [
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User funds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 2000){\r",
+                  "        pm.environment.set(\"userFunds\", pm.response.json().accountBalance);\r",
+                  "    };\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add funds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Add/Funds/?funds={{fundsAdded}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Add",
+                "Funds",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "funds",
+                  "value": "{{fundsAdded}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User funds after add",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct accountBalance\", function(){\r",
+                  "    pm.expect(Number(responseJson.accountBalance)).to.eql(Number(pm.environment.get(\"userFunds\")) + Number(pm.environment.get(\"fundsAdded\")));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja Dodawania środków",
+      "item": [
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User funds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 2000){\r",
+                  "        pm.environment.set(\"userFunds\", pm.response.json().accountBalance);\r",
+                  "    };\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add funds with string",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Add/Funds/?funds=asdasddasf",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Add",
+                "Funds",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "funds",
+                  "value": "asdasddasf"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add funds with negative value",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Add/Funds/?funds=-4000",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Add",
+                "Funds",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "funds",
+                  "value": "-4000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User funds after add",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct accountBalance\", function(){\r",
+                  "    pm.expect(Number(responseJson.accountBalance)).to.eql(Number(pm.environment.get(\"userFunds\")));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dodanie Auta do bazy",
+      "item": [
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN={{VIN}}&Mark={{Mark}}&Model={{Model}}&Color={{Color}}&Fuel={{Fuel}}&Prize={{Prize}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                },
+                {
+                  "key": "Mark",
+                  "value": "{{Mark}}"
+                },
+                {
+                  "key": "Model",
+                  "value": "{{Model}}"
+                },
+                {
+                  "key": "Color",
+                  "value": "{{Color}}"
+                },
+                {
+                  "key": "Fuel",
+                  "value": "{{Fuel}}"
+                },
+                {
+                  "key": "Prize",
+                  "value": "{{Prize}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get available Cars",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct VIN\", function(){\r",
+                  "    pm.expect(responseJson[responseJson.length - 1].vin.toString()).to.eql(pm.environment.get(\"VIN\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Mark\", function(){\r",
+                  "    pm.expect(responseJson[responseJson.length - 1].mark.toString()).to.eql(pm.environment.get(\"Mark\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Model\", function(){\r",
+                  "    pm.expect(responseJson[responseJson.length - 1].model.toString()).to.eql(pm.environment.get(\"Model\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Color\", function(){\r",
+                  "    pm.expect(responseJson[responseJson.length - 1].color.toString()).to.eql(pm.environment.get(\"Color\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Fuel\", function(){\r",
+                  "    pm.expect(responseJson[responseJson.length - 1].fuel.toString()).to.eql(pm.environment.get(\"Fuel\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Price\", function(){\r",
+                  "    pm.expect(responseJson[responseJson.length - 1].prizeForDay.toString()).to.eql(pm.environment.get(\"Price\"))\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Delete?VIN={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja dodania Auta do bazy",
+      "item": [
+        {
+          "name": "Create Car without tokken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN={{VIN}}&Mark={{Mark}}&Model={{Model}}&Color={{Color}}&Fuel={{Fuel}}&Prize={{Prize}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                },
+                {
+                  "key": "Mark",
+                  "value": "{{Mark}}"
+                },
+                {
+                  "key": "Model",
+                  "value": "{{Model}}"
+                },
+                {
+                  "key": "Color",
+                  "value": "{{Color}}"
+                },
+                {
+                  "key": "Fuel",
+                  "value": "{{Fuel}}"
+                },
+                {
+                  "key": "Prize",
+                  "value": "{{Prize}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Car with empty values",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN=&Mark=&Model=&Color=&Fuel=&Prize=",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": ""
+                },
+                {
+                  "key": "Mark",
+                  "value": ""
+                },
+                {
+                  "key": "Model",
+                  "value": ""
+                },
+                {
+                  "key": "Color",
+                  "value": ""
+                },
+                {
+                  "key": "Fuel",
+                  "value": ""
+                },
+                {
+                  "key": "Prize",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Car with empty string",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN=\"\" &Mark=\"\"&Model=\"\"&Color=\"\"&Fuel=\"\"&Price=0",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "\"\" ",
+                  "type": "text"
+                },
+                {
+                  "key": "Mark",
+                  "value": "\"\"",
+                  "type": "text"
+                },
+                {
+                  "key": "Model",
+                  "value": "\"\"",
+                  "type": "text"
+                },
+                {
+                  "key": "Color",
+                  "value": "\"\"",
+                  "type": "text"
+                },
+                {
+                  "key": "Fuel",
+                  "value": "\"\"",
+                  "type": "text"
+                },
+                {
+                  "key": "Price",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja usuwania Auta z Bazy",
+      "item": [
+        {
+          "name": "Delete Car without token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Delete?VIN={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja pobierania danych aut z bazy",
+      "item": [
+        {
+          "name": "Get available Cars without token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dodawanie aut do koszyka i wynajmowanie ich",
+      "item": [
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add funds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Add/Funds/?funds={{fundsAdded}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Add",
+                "Funds",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "funds",
+                  "value": "{{fundsAdded}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN={{VIN}}&Mark={{Mark}}&Model={{Model}}&Color={{Color}}&Fuel={{Fuel}}&Prize={{Price}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                },
+                {
+                  "key": "Mark",
+                  "value": "{{Mark}}"
+                },
+                {
+                  "key": "Model",
+                  "value": "{{Model}}"
+                },
+                {
+                  "key": "Color",
+                  "value": "{{Color}}"
+                },
+                {
+                  "key": "Fuel",
+                  "value": "{{Fuel}}"
+                },
+                {
+                  "key": "Prize",
+                  "value": "{{Price}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create 2nd Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN={{VIN_2}}&Mark={{Mark_2}}&Model={{Model_2}}&Color={{Color_2}}&Fuel={{Fuel_2}}&Prize={{Price_2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN_2}}"
+                },
+                {
+                  "key": "Mark",
+                  "value": "{{Mark_2}}"
+                },
+                {
+                  "key": "Model",
+                  "value": "{{Model_2}}"
+                },
+                {
+                  "key": "Color",
+                  "value": "{{Color_2}}"
+                },
+                {
+                  "key": "Fuel",
+                  "value": "{{Fuel_2}}"
+                },
+                {
+                  "key": "Prize",
+                  "value": "{{Price_2}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Car to Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Add?vin={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Add"
+              ],
+              "query": [
+                {
+                  "key": "vin",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add 2nd Car to Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Add?vin={{VIN_2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Add"
+              ],
+              "query": [
+                {
+                  "key": "vin",
+                  "value": "{{VIN_2}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cars From Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct VIN\", function(){\r",
+                  "    pm.expect(pm.response.json()[0].vin).to.eql(pm.environment.get(\"VIN\"));\r",
+                  "    pm.expect(pm.response.json()[1].vin).to.eql(pm.environment.get(\"VIN_2\"));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Mark\", function(){\r",
+                  "    pm.expect(pm.response.json()[0].mark.toString()).to.eql(pm.environment.get(\"Mark\"))\r",
+                  "    pm.expect(pm.response.json()[1].mark.toString()).to.eql(pm.environment.get(\"Mark_2\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Model\", function(){\r",
+                  "    pm.expect(pm.response.json()[0].model.toString()).to.eql(pm.environment.get(\"Model\"))\r",
+                  "    pm.expect(pm.response.json()[1].model.toString()).to.eql(pm.environment.get(\"Model_2\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Color\", function(){\r",
+                  "    pm.expect(pm.response.json()[0].color.toString()).to.eql(pm.environment.get(\"Color\"))\r",
+                  "    pm.expect(pm.response.json()[1].color.toString()).to.eql(pm.environment.get(\"Color_2\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Fuel\", function(){\r",
+                  "    pm.expect(pm.response.json()[0].fuel.toString()).to.eql(pm.environment.get(\"Fuel\"))\r",
+                  "    pm.expect(pm.response.json()[1].fuel.toString()).to.eql(pm.environment.get(\"Fuel_2\"))\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Prize\", function(){\r",
+                  "    pm.expect(pm.response.json()[0].prizeForDay.toString()).to.eql(pm.environment.get(\"Price\"))\r",
+                  "    pm.expect(pm.response.json()[1].prizeForDay.toString()).to.eql(pm.environment.get(\"Price_2\"))\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buy Cars",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct response code\", function(){\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Buy",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Buy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Cars and bilans account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct VINS\", function(){\r",
+                  "    pm.expect(pm.response.json().vins[0]).to.eql(pm.environment.get(\"VIN\"));\r",
+                  "    pm.expect(pm.response.json().vins[1]).to.eql(pm.environment.get(\"VIN_2\"));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct Bilans Account\", function(){\r",
+                  "    let beginFunds = Number(pm.environment.get(\"fundsAdded\"));\r",
+                  "    let price1 = Number(pm.environment.get(\"Price\"));\r",
+                  "    let price2 = Number(pm.environment.get(\"Price_2\"));\r",
+                  "    let expetedVal = Number(beginFunds - (price1 + price2));\r",
+                  "\r",
+                  "    pm.expect(pm.response.json().accountBalance).to.eql(expetedVal);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Delete?VIN={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete 2nd Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Delete?VIN={{VIN_2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN_2}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja dodawanie auta do koszyka",
+      "item": [
+        {
+          "name": "Add Car to Cart without token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Add?vin={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Add"
+              ],
+              "query": [
+                {
+                  "key": "vin",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Car to Cart with empty VIN",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Add?vin=",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Add"
+              ],
+              "query": [
+                {
+                  "key": "vin",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Car to Cart with incorrect VIN",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Add?vin=asdasd",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Add"
+              ],
+              "query": [
+                {
+                  "key": "vin",
+                  "value": "asdasd"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja pobierania danych z koszyka",
+      "item": [
+        {
+          "name": "Get Cars From Cart without token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN={{VIN}}&Mark={{Mark}}&Model={{Model}}&Color={{Color}}&Fuel={{Fuel}}&Prize={{Price}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                },
+                {
+                  "key": "Mark",
+                  "value": "{{Mark}}"
+                },
+                {
+                  "key": "Model",
+                  "value": "{{Model}}"
+                },
+                {
+                  "key": "Color",
+                  "value": "{{Color}}"
+                },
+                {
+                  "key": "Fuel",
+                  "value": "{{Fuel}}"
+                },
+                {
+                  "key": "Prize",
+                  "value": "{{Price}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Car to Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Add?vin={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Add"
+              ],
+              "query": [
+                {
+                  "key": "vin",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Delete?VIN={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get deleted Cars From Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Car there is not in cart\", function(){\r",
+                  "    pm.expect(pm.response.json().length).to.eql(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cars From deleted Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Get",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Get"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Walidacja opłacania aut w koszyku",
+      "item": [
+        {
+          "name": "Buy Cars without token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct response code\", function(){\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Buy",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Buy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"{{userName}}\",\r\n    \"LastName\": \"{{userLastName}}\",\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Pesel\": \"{{userPesel}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Register",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Register"
+              ],
+              "query": [
+                {
+                  "key": "pesel",
+                  "value": "{{userPesel}}",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "{{userName}}",
+                  "disabled": true
+                },
+                {
+                  "key": "lastName",
+                  "value": "{{userLastName}}",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "{{userEmail}}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "    if(pm.response.code === 200)\r",
+                  "    {\r",
+                  "        pm.environment.set('token', pm.response.json().token);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Email\": \"{{userEmail}}\",\r\n    \"Password\": \"{{userPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/User/Login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Login"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buy empty Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct response code\", function(){\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Buy",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Buy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Create?VIN={{VIN}}&Mark={{Mark}}&Model={{Model}}&Color={{Color}}&Fuel={{Fuel}}&Prize={{Price}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Create"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                },
+                {
+                  "key": "Mark",
+                  "value": "{{Mark}}"
+                },
+                {
+                  "key": "Model",
+                  "value": "{{Model}}"
+                },
+                {
+                  "key": "Color",
+                  "value": "{{Color}}"
+                },
+                {
+                  "key": "Fuel",
+                  "value": "{{Fuel}}"
+                },
+                {
+                  "key": "Prize",
+                  "value": "{{Price}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buy without enough count money",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct response code\", function(){\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Buy",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Buy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add funds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Add/Funds/?funds={{fundsAdded}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Add",
+                "Funds",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "funds",
+                  "value": "{{fundsAdded}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Car",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Car/Delete?VIN={{VIN}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Car",
+                "Delete"
+              ],
+              "query": [
+                {
+                  "key": "VIN",
+                  "value": "{{VIN}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buy delete cars",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct response code\", function(){\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Buy",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Buy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct Code Response\", function(){\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Delete",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Delete"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buy by delete user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Correct response code\", function(){\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Cart/Buy",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Cart",
+                "Buy"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Funkcje Admina",
+      "item": [
+        {
+          "name": "Get Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/GetAll",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "GetAll"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/User/Admin/Assign?id=39979c88-924d-4b93-ad7d-2ea02062f267",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "User",
+                "Admin",
+                "Assign"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "39979c88-924d-4b93-ad7d-2ea02062f267"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
