@@ -183,4 +183,26 @@ public class UserService : BaseService, IUserService
             return ServiceResult.Failure();
         }
     }
+
+    public async Task<ServiceResult> ReturnCarAsync(string id, string vin)
+    {
+        try
+        {
+            var user = await GetUserWithCarsByIdAsync(id);
+            var car = await GetCarByIdAsync(vin);
+            user.Cars!.Remove(car);
+            var result = await _context.SaveChangesAsync();
+            if(result == 0)
+            {
+                _logger.LogError("Database Save Error");
+                return ServiceResult.Failure("Nie udało się zwrócić Auta");
+            }
+            return ServiceResult.Success("Auto zwrócono");
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Critical Error in Retrun car");
+            return ServiceResult.Failure();
+        }
+    }
 }

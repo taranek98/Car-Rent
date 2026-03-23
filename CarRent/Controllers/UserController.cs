@@ -112,4 +112,18 @@ public class UserController : ControllerBase
         }
         return Ok(result.Message);  
     }
+
+    [HttpPost]
+    [Route("User/Return/Car")]
+    [Authorize]
+    public async Task<IActionResult> ReturnCar(string vin)
+    {
+        var idUser = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+        var result = await _userService.ReturnCarAsync(idUser, vin);
+        if(!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
+        return Ok(result.Message);  
+    }
 }

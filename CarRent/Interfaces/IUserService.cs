@@ -14,4 +14,5 @@ public interface IUserService
     Task<ServiceResult> DeleteAsync(string id);
     Task<ServiceResult> AddAdminToRoleAsync(string id);
     Task<ServiceResult> AddFundsAsync(string id, decimal funds);
+    Task<ServiceResult> ReturnCarAsync(string id, string vin);
 }
